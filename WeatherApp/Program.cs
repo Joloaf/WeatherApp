@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Tänkte snacka lite om vädret...");
+          TextToList.ListList();
         }
     }
 }

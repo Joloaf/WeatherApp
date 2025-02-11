@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.Models
 {
-    public class WeatherData
+    public class DailyWeatherAverage
     {
         public string Year { get; set; }
         public string Month { get; set; }
         public string Day { get; set; }
-        public string Time { get; set; }
-        public string Location { get; set; }
-        public double Temp { get; set; }
-        public double Humidity { get; set; }
+        public double AverageTemp { get; set; }
+        public double AverageHumidity { get; set; }
     }
 }
