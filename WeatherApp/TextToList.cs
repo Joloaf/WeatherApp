@@ -5,6 +5,7 @@ using WeatherApp.Models;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WeatherApp
 {
@@ -74,11 +75,32 @@ namespace WeatherApp
                 })
                 .ToList();
 
+            var monthaverage = allWeatherData
+                .GroupBy(data => new { data.Year, data.Month, data.Location })
+                .Select(g => new
+                {
+                    g.Key.Year,
+                    g.Key.Month,
+                    g.Key.Location,
+                    AverageTemp = g.Average(x => x.Temp),
+                    AverageHumidity = g.Average(x => x.Humidity)
+                })
+                .ToList();
+
+
+
+
             foreach (var data in weatherAverages)
             {
                 string locationText = data.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
                 Console.WriteLine($"Datum: {data.Year}-{data.Month}-{data.Day} | {locationText} - Medeltemp: {data.AverageTemp:F1}°C, Medelfuktighet: {data.AverageHumidity:F1}%");
             }
+            foreach (var  item in monthaverage)
+            {
+                string locationText = item.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
+                Console.WriteLine($"Datum: {item.Year}-{item.Month} | {locationText} - Medeltemp: {item.AverageTemp:F1}°C, Medelfuktighet: {item.AverageHumidity:F1}%");
+            }
         }
     }
+    
 }
