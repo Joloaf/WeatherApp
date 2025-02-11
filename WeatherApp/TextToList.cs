@@ -61,60 +61,23 @@ namespace WeatherApp
                 }
             }
 
-            List<WeatherData> indoorWeatherData = allWeatherData.Where(data => data.Location.ToLower() == "inne").ToList();
-            List<WeatherData> outdoorWeatherData = allWeatherData.Where(data => data.Location.ToLower() == "ute").ToList();
-
-            var indoorAverages = indoorWeatherData
-                .GroupBy(data => new { data.Year, data.Month, data.Day })
+            var weatherAverages = allWeatherData
+                .GroupBy(data => new { data.Year, data.Month, data.Day, data.Location })
                 .Select(g => new
-                {
+                {   
                     g.Key.Year,
                     g.Key.Month,
                     g.Key.Day,
+                    g.Key.Location,
                     AverageTemp = g.Average(x => x.Temp),
                     AverageHumidity = g.Average(x => x.Humidity)
                 })
                 .ToList();
 
-            var outdoorAverages = outdoorWeatherData
-                .GroupBy(data => new { data.Year, data.Month, data.Day })
-                .Select(g => new
-                {
-                    g.Key.Year,
-                    g.Key.Month,
-                    g.Key.Day,
-                    AverageTemp = g.Average(x => x.Temp),
-                    AverageHumidity = g.Average(x => x.Humidity)
-                })
-                .ToList();
-
-            List<DailyWeatherAverage> indoorWeatherAverages = indoorAverages.Select(d => new DailyWeatherAverage
+            foreach (var data in weatherAverages)
             {
-                Year = d.Year,
-                Month = d.Month,
-                Day = d.Day,
-                AverageTemp = d.AverageTemp,
-                AverageHumidity = d.AverageHumidity
-            }).ToList();
-
-            List<DailyWeatherAverage> outdoorWeatherAverages = outdoorAverages.Select(d => new DailyWeatherAverage
-            {
-                Year = d.Year,
-                Month = d.Month,
-                Day = d.Day,
-                AverageTemp = d.AverageTemp,
-                AverageHumidity = d.AverageHumidity
-            }).ToList();
-
-            foreach (var indoorData in indoorWeatherAverages)
-            {
-                var outdoorData = outdoorWeatherAverages.FirstOrDefault(o => o.Year == indoorData.Year && o.Month == indoorData.Month && o.Day == indoorData.Day);
-
-                if (outdoorData != null)
-                {
-                    Console.WriteLine($"Datum: {indoorData.Year}-{indoorData.Month}-{indoorData.Day} | Inomhus - Medeltemp: {indoorData.AverageTemp:F1}°C, Medelfuktighet: {indoorData.AverageHumidity:F1}%");
-                    Console.WriteLine($"Datum: {indoorData.Year}-{indoorData.Month}-{indoorData.Day} | Utomhus - Medeltemp: {outdoorData.AverageTemp:F1}°C, Medelfuktighet: {outdoorData.AverageHumidity:F1}%");
-                }
+                string locationText = data.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
+                Console.WriteLine($"Datum: {data.Year}-{data.Month}-{data.Day} | {locationText} - Medeltemp: {data.AverageTemp:F1}°C, Medelfuktighet: {data.AverageHumidity:F1}%");
             }
         }
     }
