@@ -1,10 +1,17 @@
-﻿namespace WeatherApp
+﻿using WeatherApp.MainMenu;
+using WeatherApp.OutdoorMenu;
+
+
+
+namespace WeatherApp
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-          TextToList.ListList();
+            //TextToList.ListList();
+            MainMenus.ShowMainMenu();
+            
         }
     }
 }
