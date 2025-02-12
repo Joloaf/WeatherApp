@@ -10,38 +10,24 @@ namespace WeatherApp
 {
     internal class TextToList
     {
-        public static void ListList()
+        public static List<WeatherData> ListList()
         {
-            string filePath = @"..\..\..\Files\tempData_medFel.txt"; 
-
-
-
-            
+            string filePath = @"..\..\..\Files\tempData_medFel.txt";
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>\w+),(?<temp>-?\d+\.\d+),(?<humidity>\d+)";
 
+            List<WeatherData> weatherList = new List<WeatherData>(); // Skapar listan
 
+            
 
-            List<WeatherData> weatherList = new List<WeatherData>(); // Lista för att spara väderdata
-
-
-
-
-
-            // Läs filen rad för rad med File.ReadLines()
             foreach (string line in File.ReadLines(filePath))
             {
-                Match match = Regex.Match(line, pattern); 
-
-
-
-
-
-                if (match.Success) 
+                Match match = Regex.Match(line, pattern);
+                if (match.Success)
                 {
                     bool tempSuccess = double.TryParse(match.Groups["temp"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double temp);
                     bool humiditySuccess = double.TryParse(match.Groups["humidity"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double humidity);
 
-                    if (tempSuccess && humiditySuccess) 
+                    if (tempSuccess && humiditySuccess)
                     {
                         weatherList.Add(new WeatherData
                         {
@@ -54,49 +40,13 @@ namespace WeatherApp
                             Humidity = humidity
                         });
                     }
-                    else
-                    {
-                        Console.WriteLine($"Fel i raden: {line}"); 
-                    }
                 }
             }
 
-
-
-            // Beräkna och visa medelvärden för dag och månad
-            ShowAverages(weatherList, "dag", w => new { w.Year, w.Month, w.Day, w.Location });
-            ShowAverages(weatherList, "månad", w => new { w.Year, w.Month, w.Location });
-        }
-
-
-
-
-
-
-        // Funktion för att räkna ut och visa medeltemperatur och luftfuktighet
-        private static void ShowAverages(List<WeatherData> data, string period, Func<WeatherData, object> groupBy)
-        {
-            var averages = data.GroupBy(groupBy)
-                .Select(group => new
-                {
-                    Key = group.Key,
-                    AvgTemp = group.Average(w => w.Temp),
-                    AvgHumidity = group.Average(w => w.Humidity)
-                });
-
-
-
-
-            // Skriv ut resultaten
-            foreach (var item in averages)
-            {
-                dynamic key = item.Key;
-                string locationText = key.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
-                string dateText = period == "dag" ? $"{key.Year}-{key.Month}-{key.Day}" : $"{key.Year}-{key.Month}";
-
-                Console.WriteLine($"Datum: {dateText} | {locationText} - Medeltemp: {item.AvgTemp:F1}°C, Medelfuktighet: {item.AvgHumidity:F1}%");
-            }
+            
+            return weatherList; // Returnerar listan så att andra klasser kan använda den
         }
     }
 }
+
 
