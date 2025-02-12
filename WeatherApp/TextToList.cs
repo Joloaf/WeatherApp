@@ -13,7 +13,7 @@ namespace WeatherApp
         public static void ListList()
         {
             string filePath = @"..\..\..\Files\tempData_medFel.txt";
-            string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>\w+),(?<temp>-?\d+\.\d+),(?<humidity>\d+)";
+            string pattern = @"(?<year>2016)-(?<month>06|07|08|09|10|11|12)-(?<day>(0[1-9]|[12][0-9]|3[01]))\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>Inne|Ute),(?<temp>-?(4[0-9]|50|\d{1,2}).\d+),(?<humidity>(0|[1-9][0-9]?|100))";
             List<WeatherData> weatherList = new List<WeatherData>(); // Lista för att spara väderdata
 
             // Läs filen rad för rad med File.ReadLines()
@@ -51,6 +51,21 @@ namespace WeatherApp
 
             // Spara månatliga medelvärden till fil
             SaveMonthlyAveragesToFile(weatherList, @"..\..\..\Files\monthlyAverages.txt");
+
+            // Beräkna och visa datum för höstens och vinterns start
+            string autumnStartDate = CalculateSeasonStartDate(weatherList, 10);
+            string winterStartDate = CalculateSeasonStartDate(weatherList, 0);
+
+            using (StreamWriter writer = new StreamWriter(@"..\..\..\Files\monthlyAverages.txt", true))
+            {
+                writer.WriteLine();
+                writer.WriteLine("Säsongsstart:");
+                SaveAndDisplaySeasonStartDate(writer, "Hösten", autumnStartDate);
+                SaveAndDisplaySeasonStartDate(writer, "Vintern", winterStartDate);
+            }
+
+            SaveAndDisplaySeasonStartDate(Console.Out, "Hösten", autumnStartDate);
+            SaveAndDisplaySeasonStartDate(Console.Out, "Vintern", winterStartDate);
         }
 
         // Funktion för att räkna ut och visa medeltemperatur och luftfuktighet
@@ -86,16 +101,97 @@ namespace WeatherApp
                     Location = group.Key.Location,
                     AvgTemp = group.Average(w => w.Temp),
                     AvgHumidity = group.Average(w => w.Humidity)
-                });
+                })
+                .OrderBy(item => item.Year)
+                .ThenBy(item => item.Month)
+                .ThenBy(item => item.Location == "Ute" ? 0 : 1);
 
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                writer.WriteLine("Year,Month,Location,AvgTemp,AvgHumidity");
-                foreach (var item in monthlyAverages)
+                writer.WriteLine("Utomhus:");
+                foreach (var item in monthlyAverages.Where(item => item.Location == "Ute"))
                 {
-                    writer.WriteLine($"{item.Year},{item.Month},{item.Location},{item.AvgTemp:F1},{item.AvgHumidity:F1}");
+                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity:F1}");
+                }
+
+                writer.WriteLine();
+
+                writer.WriteLine("Inomhus:");
+                foreach (var item in monthlyAverages.Where(item => item.Location == "Inne"))
+                {
+                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity:F1}");
                 }
             }
+        }
+
+        // Funktion för att spara och visa datum för en säsongs start
+        private static void SaveAndDisplaySeasonStartDate(TextWriter writer, string seasonName, string startDate)
+        {
+            if (!string.IsNullOrEmpty(startDate))
+            {
+                writer.WriteLine($"{seasonName} börjar den: {startDate}");
+            }
+            else
+            {
+                writer.WriteLine($"{seasonName} började inte under den angivna perioden.");
+            }
+        }
+
+        // Funktion för att beräkna datum för säsongens start
+        private static string CalculateSeasonStartDate(List<WeatherData> data, double threshold)
+        {
+            var dailyAverages = CalculateDailyAverages(data);
+
+            // Debugging: Print daily average temperatures
+            foreach (var day in dailyAverages)
+            {
+                Console.WriteLine($"Datum: {day.Date} - Medeltemperatur: {day.AvgTemp:F1}°C");
+            }
+
+            for (int i = 0; i <= dailyAverages.Count - 5; i++)
+            {
+                if (dailyAverages.Skip(i).Take(5).All(d => d.AvgTemp < threshold))
+                {
+                    return dailyAverages[i].Date;
+                }
+            }
+
+            return null;
+        }
+
+        // Funktion för att beräkna dagliga medelvärden
+        private static List<(string Date, double AvgTemp)> CalculateDailyAverages(List<WeatherData> data)
+        {
+            return data.Where(w => w.Location == "Ute")
+                .GroupBy(w => new { w.Year, w.Month, w.Day })
+                .Select(group => new
+                {
+                    Date = $"{group.Key.Year}-{group.Key.Month}-{group.Key.Day}",
+                    AvgTemp = group.Average(w => w.Temp)
+                })
+                .OrderBy(item => item.Date)
+                .Select(item => (item.Date, item.AvgTemp))
+                .ToList();
+        }
+
+        private static string GetMonthName(string month)
+        {
+            return month switch
+            {
+                "01" => "Januari",
+                "02" => "Februari",
+                "03" => "Mars",
+                "04" => "April",
+                "05" => "Maj",
+                "06" => "Juni",
+                "07" => "Juli",
+                "08" => "Augusti",
+                "09" => "September",
+                "10" => "Oktober",
+                "11" => "November",
+                "12" => "December",
+                _ => month
+            };
         }
     }
 }
