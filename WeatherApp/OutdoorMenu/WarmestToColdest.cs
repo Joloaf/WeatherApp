@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherApp.IndoorMenu;
 using WeatherApp.MainMenu;
+using WeatherApp.Models;
 
 namespace WeatherApp.OutdoorMenu
 {
@@ -15,12 +16,55 @@ namespace WeatherApp.OutdoorMenu
         public static void SortByWarmestToColdest()
         {
 
+
             Console.Clear();
-
             MainMenus.ShowHeader();
+            Console.WriteLine();
+            Console.WriteLine();
 
-            AnsiConsole.Markup("[bold green]Sortering av varmast till kallaste dagen enligt medeltemperatur per dag[/]\n");
 
+
+
+            // Hämta väderdata
+            List<WeatherData> weatherData = TextToList.ListList();
+
+
+
+
+
+
+
+            var sortedDays = weatherData
+            .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase))
+            .GroupBy(w => new { w.Year, w.Month, w.Day }) 
+            .Select(g => new
+           {
+            Date = $"{g.Key.Year}-{g.Key.Month}-{g.Key.Day}", 
+            AverageTemperature = g.Average(x => x.Temp) 
+           })
+           .OrderByDescending(x => x.AverageTemperature) 
+           .ToList();
+
+            
+
+
+            var table = new Table()
+                .BorderColor(Color.DarkOrange3)
+                .AddColumn(new TableColumn("[bold]Date[/]").Centered()) 
+                .AddColumn(new TableColumn("[bold]Average Temperature Outdoors (°C)[/]").Centered()); 
+
+            foreach (var day in sortedDays)
+            {
+                table.AddRow(day.Date, day.AverageTemperature.ToString("F1"));
+            }
+
+
+
+
+
+
+
+            AnsiConsole.Write(new Padder(table, new Padding(54, 0, 0, 0)));
 
 
 
