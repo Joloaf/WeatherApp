@@ -10,7 +10,7 @@ namespace WeatherApp
 {
     internal class TextToList
     {
-        public static void ListList()
+        public static List<WeatherData> ListList()
         {
             string filePath = @"..\..\..\Files\tempData_medFel.txt";
             string pattern = @"(?<year>2016)-(?<month>06|07|08|09|10|11|12)-(?<day>(0[1-9]|[12][0-9]|3[01]))\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>Inne|Ute),(?<temp>-?(4[0-9]|50|\d{1,2}).\d+),(?<humidity>(0|[1-9][0-9]?|100))";
@@ -66,6 +66,8 @@ namespace WeatherApp
 
             SaveAndDisplaySeasonStartDate(Console.Out, "Hösten", autumnStartDate);
             SaveAndDisplaySeasonStartDate(Console.Out, "Vintern", winterStartDate);
+
+            return weatherList;
         }
 
         // Funktion för att räkna ut och visa medeltemperatur och luftfuktighet

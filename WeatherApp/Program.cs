@@ -9,8 +9,8 @@ namespace WeatherApp
     {
         static void Main(string[] args)
         {
-            TextToList.ListList();
-            //MainMenus.ShowMainMenu();
+            //TextToList.ListList();
+            MainMenus.ShowMainMenu();
             
         }
     }
