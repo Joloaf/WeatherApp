@@ -1,0 +1,17 @@
+Utomhus:
+Datum: 2016-06 | Medeltemp: 15.8°C, Medelfuktighet: 53.2%
+Datum: 2016-07 | Medeltemp: 20.2°C, Medelfuktighet: 53.0%
+Datum: 2016-08 | Medeltemp: 18.1°C, Medelfuktighet: 48.6%
+Datum: 2016-09 | Medeltemp: 16.2°C, Medelfuktighet: 60.4%
+Datum: 2016-10 | Medeltemp: 8.2°C, Medelfuktighet: 64.6%
+Datum: 2016-11 | Medeltemp: 3.3°C, Medelfuktighet: 83.5%
+Datum: 2016-12 | Medeltemp: 2.5°C, Medelfuktighet: 77.9%
+
+Inomhus:
+Datum: 2016-06 | Medeltemp: 24.7°C, Medelfuktighet: 28.8%
+Datum: 2016-07 | Medeltemp: 26.3°C, Medelfuktighet: 41.6%
+Datum: 2016-08 | Medeltemp: 25.6°C, Medelfuktighet: 34.6%
+Datum: 2016-09 | Medeltemp: 23.3°C, Medelfuktighet: 41.6%
+Datum: 2016-10 | Medeltemp: 22.4°C, Medelfuktighet: 27.3%
+Datum: 2016-11 | Medeltemp: 22.8°C, Medelfuktighet: 19.1%
+Datum: 2016-12 | Medeltemp: 21.8°C, Medelfuktighet: 15.8%

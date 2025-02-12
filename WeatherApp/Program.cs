@@ -4,7 +4,11 @@
     {
         static void Main(string[] args)
         {
-          TextToList.ListList();
+            var (weatherAverages, monthlyAverage) = TextToList.ListList();
+
+            PrintWeatherData.PrintDailyAverages(weatherAverages);
+            PrintWeatherData.PrintMonthlyAverages(monthlyAverage);
+            SaveToFile.SaveMonthlyAverages(monthlyAverage);
         }
     }
 }

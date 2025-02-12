@@ -5,15 +5,14 @@ using WeatherApp.Models;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WeatherApp
 {
     internal class TextToList
     {
-        public static void ListList()
+        public static (List<dynamic> dailyAverage, List<dynamic> monthlyAverage) ListList()
         {
-            string pattern = @"(?<year>\d{4})-(?<month>(0[1-9]|1[0-2]))-(?<day>(0[1-9]|[12][0-9]|3[01]))\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>-?(4[0-9]|50|\d{1,2})\.\d+),(?<luftfuktighet>(0|[1-9][0-9]?|100))";
+            string pattern = @"(?<year>\d{4})-(?<month>(0[6-9]|1[0-2]))-(?<day>(0[1-9]|[12][0-9]|3[01]))\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>-?(4[0-9]|50|\d{1,2})\.\d+),(?<luftfuktighet>(0|[1-9][0-9]?|100))";
 
             List<WeatherData> allWeatherData = new List<WeatherData>();
 
@@ -62,10 +61,10 @@ namespace WeatherApp
                 }
             }
 
-            var weatherAverages = allWeatherData
+            var dailyAverage = allWeatherData
                 .GroupBy(data => new { data.Year, data.Month, data.Day, data.Location })
-                .Select(g => new
-                {   
+                .Select(g => (dynamic)new
+                {
                     g.Key.Year,
                     g.Key.Month,
                     g.Key.Day,
@@ -75,9 +74,9 @@ namespace WeatherApp
                 })
                 .ToList();
 
-            var monthaverage = allWeatherData
+            var monthlyAverage = allWeatherData
                 .GroupBy(data => new { data.Year, data.Month, data.Location })
-                .Select(g => new
+                .Select(g => (dynamic)new
                 {
                     g.Key.Year,
                     g.Key.Month,
@@ -87,20 +86,7 @@ namespace WeatherApp
                 })
                 .ToList();
 
-
-
-
-            foreach (var data in weatherAverages)
-            {
-                string locationText = data.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
-                Console.WriteLine($"Datum: {data.Year}-{data.Month}-{data.Day} | {locationText} - Medeltemp: {data.AverageTemp:F1}°C, Medelfuktighet: {data.AverageHumidity:F1}%");
-            }
-            foreach (var  item in monthaverage)
-            {
-                string locationText = item.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
-                Console.WriteLine($"Datum: {item.Year}-{item.Month} | {locationText} - Medeltemp: {item.AverageTemp:F1}°C, Medelfuktighet: {item.AverageHumidity:F1}%");
-            }
+            return (dailyAverage, monthlyAverage);
         }
     }
-    
 }
