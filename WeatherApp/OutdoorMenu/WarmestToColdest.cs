@@ -40,9 +40,9 @@ namespace WeatherApp.OutdoorMenu
             .Select(g => new
            {
             Date = $"{g.Key.Year}-{g.Key.Month}-{g.Key.Day}", 
-            AverageTemperature = g.Average(x => x.Temp) // Medeltemperaturen per dag
+            AverageTemperature = g.Average(x => x.Temp) 
            })
-           .OrderByDescending(x => x.AverageTemperature) // varmast till kallast
+           .OrderByDescending(x => x.AverageTemperature) 
            .ToList();
 
             

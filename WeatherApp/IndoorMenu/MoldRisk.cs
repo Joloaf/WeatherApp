@@ -28,7 +28,7 @@ namespace WeatherApp.IndoorMenu
                 .Select(g => new
                 {
                     Date = $"{g.Key.Year}-{g.Key.Month}-{g.Key.Day}",
-                    AverageMoldRisk = g.Average(x => CalculateMoldRisk(x.Temp, x.Humidity)) // Beräkna mögelrisk
+                    AverageMoldRisk = g.Average(x => CalculateMoldRisk(x.Temp, x.Humidity)) 
                 })
                 .OrderBy(x => x.AverageMoldRisk) 
                 .ToList();

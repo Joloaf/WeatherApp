@@ -16,32 +16,44 @@ namespace WeatherApp.OutdoorMenu
             Console.Clear();
             MainMenus.ShowHeader();
 
-            var weatherData = TextToList.ListList(); // Hämta väderdata
+            var weatherData = TextToList.ListList(); 
+
+
+
 
             // Filtrera endast utomhusdata och beräkna mögelrisk
             var moldRiskAverage = weatherData
-                .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase)) // Endast utomhusdata
+                .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase)) 
                 .GroupBy(w => new { w.Year, w.Month, w.Day })
                 .Select(g => new
                 {
                     Date = $"{g.Key.Year}-{g.Key.Month}-{g.Key.Day}",
-                    AverageMoldRisk = g.Average(x => CalculateMoldRisk(x.Temp, x.Humidity)) // Beräkna mögelrisk
+                    AverageMoldRisk = g.Average(x => CalculateMoldRisk(x.Temp, x.Humidity)) 
                 })
-                .OrderBy(x => x.AverageMoldRisk) // Sortera från minst till störst mögelrisk
+                .OrderBy(x => x.AverageMoldRisk) 
                 .ToList();
 
-            // Skapa tabell med Spectre.Console
+
+
+
+
+
+            // Skapa tabell 
             var table = new Table()
-                .BorderColor(Color.DarkOrange3) // 🔹 Samma färg som DriestHumid
+                .BorderColor(Color.DarkOrange3) 
                 .AddColumn(new TableColumn("[bold]Date[/]").Centered())
                 .AddColumn(new TableColumn("[bold]Mold Risk Outdoors (%)[/]").Centered());
+
+
 
             foreach (var entry in moldRiskAverage)
             {
                 table.AddRow(entry.Date, $"{entry.AverageMoldRisk:F1}%");
             }
 
-            // 🔹 Flytta tabellen till samma position som i DriestHumid
+
+
+            
             AnsiConsole.Write(new Padder(table, new Padding(58, 0, 0, 0)));
 
             var key = Console.ReadKey(true);
@@ -62,24 +74,28 @@ namespace WeatherApp.OutdoorMenu
             }
         }
 
-        // Metod för att beräkna mögelrisk (förbättrad version)
+
+
+
+        // Metod för att beräkna mögelrisk
         private static double CalculateMoldRisk(double temperature, double humidity)
         {
-            if (temperature < -5 || temperature > 40) return 0; // Utökat temperaturintervall
-            if (humidity < 50) return 0; // Lägre luftfuktighetsgräns
+            if (temperature < -5 || temperature > 40) return 0; 
+            if (humidity < 50) return 0; 
 
-            // Normalisering av temperatur (0-1 skala)
-            double tempRisk = (temperature + 5) / 45; // (-5°C → 0, 40°C → 1)
+            
+            double tempRisk = (temperature + 5) / 45; 
             tempRisk = Math.Max(0, Math.Min(1, tempRisk));
 
-            // Normalisering av luftfuktighet (0-1 skala)
-            double humidityRisk = (humidity - 50) / 50; // (50% → 0, 100% → 1)
+           
+            double humidityRisk = (humidity - 50) / 50; 
             humidityRisk = Math.Max(0, Math.Min(1, humidityRisk));
 
-            // Kombinera temperatur- och fuktighetsrisk
-            double moldRisk = Math.Sqrt(tempRisk * humidityRisk) * 100; // Mer realistisk beräkning
+            
 
-            return Math.Round(moldRisk, 2); // Returnera procentvärde
+            double moldRisk = Math.Sqrt(tempRisk * humidityRisk) * 100; 
+
+            return Math.Round(moldRisk, 2); 
         }
     }
 }
