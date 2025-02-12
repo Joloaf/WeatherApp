@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using WeatherApp.Models;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
