@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using WeatherApp.Models;
 
 namespace WeatherApp
 {
