@@ -15,11 +15,21 @@ namespace WeatherApp.OutdoorMenu
         {
             Console.Clear();
             MainMenus.ShowHeader();
+            Console.WriteLine();
+            Console.WriteLine();
 
-            // 🔹 Hämta väderdata
+
+
+
+            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
 
-            // 🔹 Sortera dagarna baserat på medelluftfuktighet (endast utomhus)
+
+
+
+
+
+            // Sortera dagarna baserat på medelluftfuktighet 
             var sortedDays = weatherData
                 .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase))
                 .GroupBy(w => $"{w.Year}-{w.Month}-{w.Day}")
@@ -31,19 +41,33 @@ namespace WeatherApp.OutdoorMenu
                 .OrderBy(x => x.AverageHumidity)
                 .ToList();
 
-            // 🔹 Skapa tabellen utan box
+
+
+
+
+
+            
             var table = new Table()
-                .AddColumn("Datum")
-                .AddColumn("Medelfuktighet (%)");
+                .BorderColor(Color.DarkOrange3) 
+                .AddColumn(new TableColumn("[bold]Date[/]").Centered())
+                .AddColumn(new TableColumn("[bold]Average Humidity Outdoors (%)[/]").Centered());
 
             foreach (var day in sortedDays)
-                table.AddRow(day.Date.PadLeft(15), day.AverageHumidity.ToString("F1").PadLeft(15)); // 🔹 Flyttar tabelltexten åt höger
+            {
+                table.AddRow(day.Date, day.AverageHumidity.ToString("F1"));
+            }
 
-            // 🔹 Flytta tabellen åt höger genom att ändra Console.Write
-            Console.WriteLine("\n".PadLeft(10)); // 🔹 Extra mellanrum innan tabellen
-            AnsiConsole.Write(table);
 
-            // 🔹 Menyval för att navigera tillbaka
+
+
+
+           
+            AnsiConsole.Write(new Padder(table, new Padding(55, 0, 0, 0)));
+
+
+
+
+
             var key = Console.ReadKey(true);
             switch (key.Key)
             {
@@ -66,4 +90,5 @@ namespace WeatherApp.OutdoorMenu
         }
     }
 }
+
 
