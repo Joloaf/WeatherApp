@@ -34,7 +34,7 @@ namespace WeatherApp.IndoorMenu
                     case "I":
                         IndoorMenus.ShowIndoorMenus();
                         return;
-                    case "U":
+                    case "O":
                         OutdoorMenus.ShowOutdoorMenu();
                         return;
                     case "Q":
