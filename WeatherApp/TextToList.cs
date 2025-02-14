@@ -46,8 +46,8 @@ namespace WeatherApp
             }
 
             // Beräkna och visa medelvärden för dag och månad
-            ShowAverages(weatherList, "dag", w => new { w.Year, w.Month, w.Day, w.Location });
-            ShowAverages(weatherList, "månad", w => new { w.Year, w.Month, w.Location });
+            //(weatherList, "dag", w => new { w.Year, w.Month, w.Day, w.Location });
+            //ShowAverages(weatherList, "månad", w => new { w.Year, w.Month, w.Location });
 
             // Spara månatliga medelvärden till fil
             SaveMonthlyAveragesToFile(weatherList, @"..\..\..\Files\monthlyAverages.txt");
@@ -64,8 +64,8 @@ namespace WeatherApp
                 SaveAndDisplaySeasonStartDate(writer, "Vintern", winterStartDate);
             }
 
-            SaveAndDisplaySeasonStartDate(Console.Out, "Hösten", autumnStartDate);
-            SaveAndDisplaySeasonStartDate(Console.Out, "Vintern", winterStartDate);
+            //SaveAndDisplaySeasonStartDate(Console.Out, "Hösten", autumnStartDate);
+            //SaveAndDisplaySeasonStartDate(Console.Out, "Vintern", winterStartDate);
 
             return weatherList;
         }
@@ -145,10 +145,10 @@ namespace WeatherApp
             var dailyAverages = CalculateDailyAverages(data);
 
             // Debugging: Print daily average temperatures
-            foreach (var day in dailyAverages)
-            {
-                Console.WriteLine($"Datum: {day.Date} - Medeltemperatur: {day.AvgTemp:F1}°C");
-            }
+            //foreach (var day in dailyAverages)
+            //{
+            //    Console.WriteLine($"Datum: {day.Date} - Medeltemperatur: {day.AvgTemp:F1}°C");
+            //}
 
             for (int i = 0; i <= dailyAverages.Count - 5; i++)
             {
