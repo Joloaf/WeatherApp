@@ -65,7 +65,7 @@ namespace WeatherApp.IndoorMenu
                     .Select(g => new
                     {
                         Date = $"{g.Key.Year}-{g.Key.Month}-{g.Key.Day}",
-                        AverageTemperature = g.Average(x => x.Temp)
+                        AverageTemperature = g.Select(x => x).CalculateAverageTemperature() // Använder Extension Method för att räkna ut medeltemperaturen
                     })
                     .FirstOrDefault();
 
@@ -185,5 +185,24 @@ namespace WeatherApp.IndoorMenu
             }
         }
     }
+
+
+    // Extension Method för att räkna ut medeltemperaturen
+    public static class WeatherExtensions
+    {
+
+        // Tar en lista med WeatherData och beräknar medeltemperaturen
+        public static double CalculateAverageTemperature(this IEnumerable<WeatherData> weatherData)
+        {
+
+
+            // Om listan har värden, beräkna medeltemperaturen, annars returnera NaN
+            return weatherData.Any() ? weatherData.Average(w => w.Temp) : double.NaN;
+        }
+
+
+    }
+
+
 }
 
