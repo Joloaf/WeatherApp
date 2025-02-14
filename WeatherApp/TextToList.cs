@@ -99,7 +99,7 @@ namespace WeatherApp
         //}
 
         // Funktion för att spara månatliga medelvärden till fil
-        private static void SaveMonthlyAveragesToFile(List<WeatherData> data, string filePath)
+        public static void SaveMonthlyAveragesToFile(List<WeatherData> data, string filePath)
         {
             var monthlyAverages = data.GroupBy(w => new { w.Year, w.Month, w.Location })
                 .Select(group => new
