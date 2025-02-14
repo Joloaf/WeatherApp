@@ -1,20 +1,20 @@
 Utomhus:
-2016 - Juni       Medeltemperatur: 15.8     Luftfuktighet: 53.2
-2016 - Juli       Medeltemperatur: 20.2     Luftfuktighet: 53.0
-2016 - Augusti    Medeltemperatur: 18.1     Luftfuktighet: 48.6
-2016 - September  Medeltemperatur: 16.2     Luftfuktighet: 60.4
-2016 - Oktober    Medeltemperatur: 8.2      Luftfuktighet: 64.6
-2016 - November   Medeltemperatur: 3.3      Luftfuktighet: 83.5
-2016 - December   Medeltemperatur: 2.5      Luftfuktighet: 77.9
+2016 - Juni       Medeltemperatur: 15.8     Luftfuktighet: 53.2       Mögelrisk: 20.7%
+2016 - Juli       Medeltemperatur: 20.2     Luftfuktighet: 53.0       Mögelrisk: 21.6%
+2016 - Augusti    Medeltemperatur: 18.1     Luftfuktighet: 48.6       Mögelrisk: 12.6%
+2016 - September  Medeltemperatur: 16.2     Luftfuktighet: 60.4       Mögelrisk: 27.7%
+2016 - Oktober    Medeltemperatur: 8.2      Luftfuktighet: 64.6       Mögelrisk: 26.9%
+2016 - November   Medeltemperatur: 3.3      Luftfuktighet: 83.5       Mögelrisk: 33.3%
+2016 - December   Medeltemperatur: 2.5      Luftfuktighet: 77.9       Mögelrisk: 29.0%
 
 Inomhus:
-2016 - Juni       Medeltemperatur: 24.7     Luftfuktighet: 28.8
-2016 - Juli       Medeltemperatur: 26.3     Luftfuktighet: 41.6
-2016 - Augusti    Medeltemperatur: 25.6     Luftfuktighet: 34.6
-2016 - September  Medeltemperatur: 23.3     Luftfuktighet: 41.6
-2016 - Oktober    Medeltemperatur: 22.4     Luftfuktighet: 27.3
-2016 - November   Medeltemperatur: 22.8     Luftfuktighet: 19.1
-2016 - December   Medeltemperatur: 21.8     Luftfuktighet: 15.8
+2016 - Juni       Medeltemperatur: 24.7     Luftfuktighet: 28.8       Mögelrisk: 0.0%
+2016 - Juli       Medeltemperatur: 26.3     Luftfuktighet: 41.6       Mögelrisk: 0.0%
+2016 - Augusti    Medeltemperatur: 25.6     Luftfuktighet: 34.6       Mögelrisk: 0.0%
+2016 - September  Medeltemperatur: 23.3     Luftfuktighet: 41.6       Mögelrisk: 0.2%
+2016 - Oktober    Medeltemperatur: 22.4     Luftfuktighet: 27.3       Mögelrisk: 0.0%
+2016 - November   Medeltemperatur: 22.8     Luftfuktighet: 19.1       Mögelrisk: 0.0%
+2016 - December   Medeltemperatur: 21.8     Luftfuktighet: 15.8       Mögelrisk: 0.0%
 
 Säsongsstart:
 Hösten börjar den: 2016-10-04

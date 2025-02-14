@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WeatherApp.Models;
+using WeatherApp.OutdoorMenu;
 
 namespace WeatherApp
 {
@@ -27,6 +28,8 @@ namespace WeatherApp
 
                     if (tempSuccess && humiditySuccess)
                     {
+                        double moldRisk = RiskOfMold.CalculateMoldRisk(temp, humidity); // No change needed here
+
                         weatherList.Add(new WeatherData
                         {
                             Year = match.Groups["year"].Value,
@@ -35,7 +38,8 @@ namespace WeatherApp
                             Time = match.Groups["time"].Value,
                             Location = match.Groups["place"].Value,
                             Temp = temp,
-                            Humidity = humidity
+                            Humidity = humidity,
+                            MoldRisk = moldRisk
                         });
                     }
                     else
@@ -64,6 +68,7 @@ namespace WeatherApp
                 SaveAndDisplaySeasonStartDate(writer, "Vintern", winterStartDate);
             }
 
+            // Skriv ut resultaten - används för att testa att allt fungerar
             //SaveAndDisplaySeasonStartDate(Console.Out, "Hösten", autumnStartDate);
             //SaveAndDisplaySeasonStartDate(Console.Out, "Vintern", winterStartDate);
 
@@ -71,26 +76,27 @@ namespace WeatherApp
         }
 
         // Funktion för att räkna ut och visa medeltemperatur och luftfuktighet
-        private static void ShowAverages(List<WeatherData> data, string period, Func<WeatherData, object> groupBy)
-        {
-            var averages = data.GroupBy(groupBy)
-                .Select(group => new
-                {
-                    Key = group.Key,
-                    AvgTemp = group.Average(w => w.Temp),
-                    AvgHumidity = group.Average(w => w.Humidity)
-                });
+        //private static void ShowAverages(List<WeatherData> data, string period, Func<WeatherData, object> groupBy)
+        //{
+        //    var averages = data.GroupBy(groupBy)
+        //        .Select(group => new
+        //        {
+        //            Key = group.Key,
+        //            AvgTemp = group.Average(w => w.Temp),
+        //            AvgHumidity = group.Average(w => w.Humidity),
+        //            AvgMoldRisk = group.Average(w => w.MoldRisk)
+        //        });
 
-            // Skriv ut resultaten
-            foreach (var item in averages)
-            {
-                dynamic key = item.Key;
-                string locationText = key.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
-                string dateText = period == "dag" ? $"{key.Year}-{key.Month}-{key.Day}" : $"{key.Year}-{key.Month}";
+        //    // Skriv ut resultaten
+        //    foreach (var item in averages)
+        //    {
+        //        dynamic key = item.Key;
+        //        string locationText = key.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
+        //        string dateText = period == "dag" ? $"{key.Year}-{key.Month}-{key.Day}" : $"{key.Year}-{key.Month}";
 
-                Console.WriteLine($"Datum: {dateText} | {locationText} - Medeltemp: {item.AvgTemp:F1}°C, Medelfuktighet: {item.AvgHumidity:F1}%");
-            }
-        }
+        //        Console.WriteLine($"Datum: {dateText} | {locationText} - Medeltemp: {item.AvgTemp:F1}°C, Medelfuktighet: {item.AvgHumidity:F1}%, Mögelrisk: {item.AvgMoldRisk:F1}%");
+        //    }
+        //}
 
         // Funktion för att spara månatliga medelvärden till fil
         private static void SaveMonthlyAveragesToFile(List<WeatherData> data, string filePath)
@@ -102,7 +108,8 @@ namespace WeatherApp
                     Month = group.Key.Month,
                     Location = group.Key.Location,
                     AvgTemp = group.Average(w => w.Temp),
-                    AvgHumidity = group.Average(w => w.Humidity)
+                    AvgHumidity = group.Average(w => w.Humidity),
+                    AvgMoldRisk = group.Average(w => w.MoldRisk)
                 })
                 .OrderBy(item => item.Year)
                 .ThenBy(item => item.Month)
@@ -113,7 +120,7 @@ namespace WeatherApp
                 writer.WriteLine("Utomhus:");
                 foreach (var item in monthlyAverages.Where(item => item.Location == "Ute"))
                 {
-                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity:F1}");
+                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
                 }
 
                 writer.WriteLine();
@@ -121,7 +128,7 @@ namespace WeatherApp
                 writer.WriteLine("Inomhus:");
                 foreach (var item in monthlyAverages.Where(item => item.Location == "Inne"))
                 {
-                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity:F1}");
+                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
                 }
             }
         }
