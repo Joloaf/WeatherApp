@@ -147,7 +147,7 @@ namespace WeatherApp
         }
 
         // Funktion för att beräkna datum för säsongens start
-        private static string CalculateSeasonStartDate(List<WeatherData> data, double threshold)
+        public static string CalculateSeasonStartDate(List<WeatherData> data, double threshold)
         {
             var dailyAverages = CalculateDailyAverages(data);
 
