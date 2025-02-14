@@ -11,6 +11,9 @@ namespace WeatherApp.OutdoorMenu
 {
     internal class DriestToMostHumid
     {
+        // Definiera delegaten för att sortera väderdata
+        public delegate List<WeatherData> SortWeatherData(List<WeatherData> weatherData);
+
         public static void SortByDriestToMostHumid()
         {
             Console.Clear();
@@ -18,55 +21,24 @@ namespace WeatherApp.OutdoorMenu
             Console.WriteLine();
             Console.WriteLine();
 
-
-
-
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
 
+            SortWeatherData sortFunction = SortByHumidity;
 
+            var sortedDays = sortFunction(weatherData);
 
-
-
-
-            // Sortera dagarna baserat på medelluftfuktighet 
-            var sortedDays = weatherData
-                .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase))
-                .GroupBy(w => $"{w.Year}-{w.Month}-{w.Day}")
-                .Select(g => new
-                {
-                    Date = g.Key,
-                    AverageHumidity = g.Average(x => x.Humidity)
-                })
-                .OrderBy(x => x.AverageHumidity)
-                .ToList();
-
-
-
-
-
-
-            
             var table = new Table()
-                .BorderColor(Color.DarkOrange3) 
+                .BorderColor(Color.DarkOrange3)
                 .AddColumn(new TableColumn("[bold]Date[/]").Centered())
                 .AddColumn(new TableColumn("[bold]Average Humidity Outdoors (%)[/]").Centered());
 
             foreach (var day in sortedDays)
             {
-                table.AddRow(day.Date, day.AverageHumidity.ToString("F1"));
+                string date = $"{day.Year}-{day.Month}-{day.Day}";
+                table.AddRow(date, day.Humidity.ToString("F1"));
             }
 
-
-
-
-
-           
             AnsiConsole.Write(new Padder(table, new Padding(55, 0, 0, 0)));
-
-
-
-
 
             var key = Console.ReadKey(true);
             switch (key.Key)
@@ -88,7 +60,21 @@ namespace WeatherApp.OutdoorMenu
                     break;
             }
         }
+
+        public static List<WeatherData> SortByHumidity(List<WeatherData> weatherData)
+        {
+            return weatherData
+                .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase))
+                .GroupBy(w => $"{w.Year}-{w.Month}-{w.Day}")
+                .Select(g => new WeatherData
+                {
+                    Year = g.Key.Split('-')[0],
+                    Month = g.Key.Split('-')[1],
+                    Day = g.Key.Split('-')[2],
+                    Humidity = g.Average(x => x.Humidity)
+                })
+                .OrderBy(x => x.Humidity)
+                .ToList();
+        }
     }
 }
-
-
