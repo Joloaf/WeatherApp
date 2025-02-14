@@ -49,10 +49,6 @@ namespace WeatherApp
                 }
             }
 
-            // Beräkna och visa medelvärden för dag och månad
-            //(weatherList, "dag", w => new { w.Year, w.Month, w.Day, w.Location });
-            //ShowAverages(weatherList, "månad", w => new { w.Year, w.Month, w.Location });
-
             // Spara månatliga medelvärden till fil
             SaveMonthlyAveragesToFile(weatherList, @"..\..\..\Files\monthlyAverages.txt");
 
@@ -66,6 +62,12 @@ namespace WeatherApp
                 writer.WriteLine("Säsongsstart:");
                 SaveAndDisplaySeasonStartDate(writer, "Hösten", autumnStartDate);
                 SaveAndDisplaySeasonStartDate(writer, "Vintern", winterStartDate);
+
+                // Add mold risk calculation formula
+                writer.WriteLine();
+                writer.WriteLine(@"Om temperaturen är utanför intervallet -5°C till 40°C eller luftfuktigheten är under 50%, returnera 0; 
+annars beräkna MoldRisk = √(((Temperatur + 5) / 45) * ((Luftfuktighet - 50) / 50)) * 100, 
+och returnera MoldRisk avrundad till två decimaler.");
             }
 
             // Skriv ut resultaten - används för att testa att allt fungerar
@@ -74,29 +76,6 @@ namespace WeatherApp
 
             return weatherList;
         }
-
-        // Funktion för att räkna ut och visa medeltemperatur och luftfuktighet
-        //private static void ShowAverages(List<WeatherData> data, string period, Func<WeatherData, object> groupBy)
-        //{
-        //    var averages = data.GroupBy(groupBy)
-        //        .Select(group => new
-        //        {
-        //            Key = group.Key,
-        //            AvgTemp = group.Average(w => w.Temp),
-        //            AvgHumidity = group.Average(w => w.Humidity),
-        //            AvgMoldRisk = group.Average(w => w.MoldRisk)
-        //        });
-
-        //    // Skriv ut resultaten
-        //    foreach (var item in averages)
-        //    {
-        //        dynamic key = item.Key;
-        //        string locationText = key.Location.ToLower() == "inne" ? "Inomhus" : "Utomhus";
-        //        string dateText = period == "dag" ? $"{key.Year}-{key.Month}-{key.Day}" : $"{key.Year}-{key.Month}";
-
-        //        Console.WriteLine($"Datum: {dateText} | {locationText} - Medeltemp: {item.AvgTemp:F1}°C, Medelfuktighet: {item.AvgHumidity:F1}%, Mögelrisk: {item.AvgMoldRisk:F1}%");
-        //    }
-        //}
 
         // Funktion för att spara månatliga medelvärden till fil
         public static void SaveMonthlyAveragesToFile(List<WeatherData> data, string filePath)

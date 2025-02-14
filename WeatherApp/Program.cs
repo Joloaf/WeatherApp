@@ -10,7 +10,7 @@ namespace WeatherApp
         static void Main(string[] args)
         {
             var weatherData = TextToList.ListList();
-            TextToList.SaveMonthlyAveragesToFile(weatherData, "monthly_averages.txt");
+            TextToList.SaveMonthlyAveragesToFile(weatherData, "monthlyAverages.txt");
             MainMenus.ShowMainMenu();
         }
     }
