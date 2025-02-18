@@ -94,22 +94,40 @@ och returnera MoldRisk avrundad till två decimaler.");
                 .ThenBy(item => item.Month)
                 .ThenBy(item => item.Location == "Ute" ? 0 : 1);
 
-            using (StreamWriter writer = new StreamWriter(filePath))
+
+
+
+            try
             {
-                writer.WriteLine("Utomhus:");
-                foreach (var item in monthlyAverages.Where(item => item.Location == "Ute"))
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
-                }
+                    writer.WriteLine("Utomhus:");
+                    foreach (var item in monthlyAverages.Where(item => item.Location == "Ute"))
+                    {
+                        writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
+                    }
 
-                writer.WriteLine();
+                    writer.WriteLine();
 
-                writer.WriteLine("Inomhus:");
-                foreach (var item in monthlyAverages.Where(item => item.Location == "Inne"))
-                {
-                    writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
+                    writer.WriteLine("Inomhus:");
+                    foreach (var item in monthlyAverages.Where(item => item.Location == "Inne"))
+                    {
+                        writer.WriteLine($"{item.Year} - {GetMonthName(item.Month),-10} Medeltemperatur: {item.AvgTemp,-8:F1} Luftfuktighet: {item.AvgHumidity,-8:F1} Mögelrisk: {item.AvgMoldRisk:F1}%");
+                    }
                 }
             }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Fel vid skrivning till filen {filePath}: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ett oväntat fel inträffade vid filskrivning: {ex.Message}");
+            }
+
+
+
+
         }
 
         // Funktion för att spara och visa datum för en säsongs start
