@@ -14,7 +14,7 @@ namespace WeatherApp
         public static List<WeatherData> ListList()
         {
             string filePath = @"..\..\..\Files\tempData_medFel.txt";
-            string pattern = @"(?<year>2016)-(?<month>06|07|08|09|10|11|12)-(?<day>(0[1-9]|[12][0-9]|3[01]))\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>Inne|Ute),(?<temp>-?(4[0-9]|50|\d{1,2}).\d+),(?<humidity>(0|[1-9][0-9]?|100))";
+            string pattern = @"(?<year>2016)-(?<month>0[6-9]|1[0-2])-(?<day>0[1-9]|[12][0-9]|3[01])\s(?<time>\d{2}:\d{2}:\d{2}),(?<place>Inne|Ute),(?<temp>-?(20|1[0-9]|[0-9]|[1-3][0-9]|40)\.\d+),(?<humidity>100|[1-9][0-9]|0?[0-9])";
             List<WeatherData> weatherList = new List<WeatherData>(); // Lista för att spara väderdata
 
             // Läs filen rad för rad med File.ReadLines()
@@ -28,7 +28,7 @@ namespace WeatherApp
 
                     if (tempSuccess && humiditySuccess)
                     {
-                        double moldRisk = RiskOfMold.CalculateMoldRisk(temp, humidity); // No change needed here
+                        double moldRisk = RiskOfMold.CalculateMoldRisk(temp, humidity);
 
                         weatherList.Add(new WeatherData
                         {
