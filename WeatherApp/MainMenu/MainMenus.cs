@@ -72,7 +72,6 @@ namespace WeatherApp.MainMenu
             var indoorPanel = new Panel("[green]I - Indoor[/]").Border(BoxBorder.Rounded).Padding(4, 1, 4, 1).Expand();
             var quitPanel = new Panel("[red]Q - Quit[/]").Border(BoxBorder.Rounded).Padding(4, 1, 4, 1).Expand();
 
-            // Lägg till boxarna i Grid 
             grid.AddRow(outdoorPanel, indoorPanel, quitPanel);
             AnsiConsole.Write(new Padder(grid, new Padding(48, 4, 0, 0)));
         }

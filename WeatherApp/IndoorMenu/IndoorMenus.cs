@@ -14,9 +14,7 @@ namespace WeatherApp.IndoorMenu
 
                 MainMenus.ShowHeader();
 
-                
 
-                
                 var table = new Table();
                 table.Border = TableBorder.Rounded;
                 table.AddColumn("[yellow]Nr[/]");
@@ -26,8 +24,6 @@ namespace WeatherApp.IndoorMenu
                 table.AddRow("2", "Sorting: Warmest to coldest day by average temperature per day");
                 table.AddRow("3", "Sorting: Driest to most humid day by average humidity per day");
                 table.AddRow("4", "Sorting: Lowest to highest risk of mold");
-
-
 
 
                 AnsiConsole.Write(new Padder(table, new Padding(45, 2, 0, 0))); 

@@ -16,7 +16,6 @@ namespace WeatherApp.OutdoorMenu
             MainMenus.ShowHeader();
             Console.WriteLine();
 
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
 
             // Beräkna datumet för meteorologisk höst
@@ -33,7 +32,6 @@ namespace WeatherApp.OutdoorMenu
             // Visa tabellen
             AnsiConsole.Write(new Padder(table, new Padding(62, 0, 0, 0)));
 
-            // Menyval
             var key = Console.ReadKey(true);
             switch (key.Key)
             {

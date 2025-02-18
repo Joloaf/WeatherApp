@@ -16,9 +16,7 @@ namespace WeatherApp.IndoorMenu
             Console.Clear();
             MainMenus.ShowHeader();
 
-            var weatherData = TextToList.ListList(); // Hämta väderdata
-
-
+            var weatherData = TextToList.ListList();
 
 
             // Filtrera endast inomhusdata 
@@ -33,13 +31,9 @@ namespace WeatherApp.IndoorMenu
                 .OrderBy(x => x.AverageMoldRisk) 
                 .ToList();
 
-
-
-
-
             
             var table = new Table()
-                .BorderColor(Color.DarkOrange3) // 🔹 Samma färg som DriestHumid
+                .BorderColor(Color.DarkOrange3) 
                 .AddColumn(new TableColumn("[bold]Date[/]").Centered())
                 .AddColumn(new TableColumn("[bold]Mold Risk Indoors (%)[/]").Centered());
 
@@ -48,10 +42,7 @@ namespace WeatherApp.IndoorMenu
                 table.AddRow(entry.Date, $"{entry.AverageMoldRisk:F1}%");
             }
 
-
-
-
-            
+          
             AnsiConsole.Write(new Padder(table, new Padding(58, 0, 0, 0)));
 
             var key = Console.ReadKey(true);
@@ -71,9 +62,6 @@ namespace WeatherApp.IndoorMenu
                     break;
             }
         }
-
-
-
 
         // Metod för att beräkna mögelrisk
         private static double CalculateMoldRisk(double temperature, double humidity)

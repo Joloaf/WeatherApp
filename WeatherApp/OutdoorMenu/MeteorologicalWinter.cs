@@ -15,7 +15,6 @@ namespace WeatherApp.OutdoorMenu
             MainMenus.ShowHeader();
             Console.WriteLine();
 
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
 
             // Beräkna datumet för meteorologisk vinter

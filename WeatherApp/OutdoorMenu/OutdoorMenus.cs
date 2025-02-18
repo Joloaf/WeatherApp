@@ -11,8 +11,6 @@ namespace WeatherApp.OutdoorMenu
             while (true)
             {
                 Console.Clear();
-
-                // Visa rubriken
                 MainMenus.ShowHeader();
 
                 

@@ -17,7 +17,7 @@ namespace WeatherApp.OutdoorMenu
             Console.Clear();
             MainMenus.ShowHeader();
 
-            var weatherData = TextToList.ListList(); // Hämta väderdata
+            var weatherData = TextToList.ListList();
             string inputDate = "";
 
             while (true)
@@ -87,11 +87,6 @@ namespace WeatherApp.OutdoorMenu
                 }
             }
         }
-
-
-
-
-
 
 
         // Metod för att visa input-rutan

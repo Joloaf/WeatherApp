@@ -16,22 +16,12 @@ namespace WeatherApp.OutdoorMenu
         public static void SortByWarmestToColdest()
         {
 
-
             Console.Clear();
             MainMenus.ShowHeader();
             Console.WriteLine();
             Console.WriteLine();
 
-
-
-
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
-
-
-
-
-
 
 
             var sortedDays = weatherData
@@ -59,15 +49,7 @@ namespace WeatherApp.OutdoorMenu
             }
 
 
-
-
-
-
-
             AnsiConsole.Write(new Padder(table, new Padding(54, 0, 0, 0)));
-
-
-
 
 
             var key = Console.ReadKey(true);

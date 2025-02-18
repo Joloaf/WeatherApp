@@ -21,15 +21,7 @@ namespace WeatherApp.IndoorMenu
             Console.WriteLine();
             Console.WriteLine();
 
-
-
-
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
-
-
-
-
 
 
             // Sortera dagarna baserat på medelluftfuktighet 
@@ -45,11 +37,6 @@ namespace WeatherApp.IndoorMenu
                 .ToList();
 
 
-
-
-
-
-
             var table = new Table()
                 .BorderColor(Color.DarkOrange3)
                 .AddColumn(new TableColumn("[bold]Date[/]").Centered())
@@ -61,15 +48,7 @@ namespace WeatherApp.IndoorMenu
             }
 
 
-
-
-
-
             AnsiConsole.Write(new Padder(table, new Padding(58, 0, 0, 0)));
-
-
-
-
 
             var key = Console.ReadKey(true);
             switch (key.Key)

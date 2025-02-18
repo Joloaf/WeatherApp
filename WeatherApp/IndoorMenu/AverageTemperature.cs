@@ -17,7 +17,7 @@ namespace WeatherApp.IndoorMenu
             Console.Clear();
             MainMenus.ShowHeader();
 
-            var weatherData = TextToList.ListList(); // Hämta väderdata
+            var weatherData = TextToList.ListList();
             string inputDate = "";
 
 
@@ -28,7 +28,6 @@ namespace WeatherApp.IndoorMenu
                 ShowInputPanel(inputDate);
                 inputDate = ReadUserInput();
 
-                // Hantera menyval
                 switch (inputDate.ToUpper())
                 {
                     case "I":
@@ -191,12 +190,8 @@ namespace WeatherApp.IndoorMenu
     public static class WeatherExtensions
     {
 
-        // Tar en lista med WeatherData och beräknar medeltemperaturen
         public static double CalculateAverageTemperature(this IEnumerable<WeatherData> weatherData)
         {
-
-
-            // Om listan har värden, beräkna medeltemperaturen, annars returnera NaN
             return weatherData.Any() ? weatherData.Average(w => w.Temp) : double.NaN;
         }
 

@@ -20,17 +20,7 @@ namespace WeatherApp.IndoorMenu
             Console.WriteLine();
             Console.WriteLine();
 
-
-
-
-            // Hämta väderdata
             List<WeatherData> weatherData = TextToList.ListList();
-
-
-
-
-
-
 
             var sortedDays = weatherData
             .Where(w => w.Location.Equals("inne", StringComparison.OrdinalIgnoreCase))
@@ -44,8 +34,6 @@ namespace WeatherApp.IndoorMenu
            .ToList();
 
 
-
-
             var table = new Table()
                 .BorderColor(Color.DarkOrange3)
                 .AddColumn(new TableColumn("[bold]Date[/]").Centered())
@@ -56,16 +44,7 @@ namespace WeatherApp.IndoorMenu
                 table.AddRow(day.Date, day.AverageTemperature.ToString("F1"));
             }
 
-
-
-
-
-
-
             AnsiConsole.Write(new Padder(table, new Padding(56, 0, 0, 0)));
-
-
-
 
 
             var key = Console.ReadKey(true);
