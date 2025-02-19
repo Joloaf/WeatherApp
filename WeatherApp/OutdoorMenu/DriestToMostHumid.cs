@@ -23,9 +23,9 @@ namespace WeatherApp.OutdoorMenu
 
             List<WeatherData> weatherData = TextToList.ListList();
 
-            SortWeatherData sortFunction = SortByHumidity;
+            SortWeatherData sortFunction = SortByHumidity; // Deligaten används här 
 
-            var sortedDays = sortFunction(weatherData);
+            var sortedDays = sortFunction(weatherData); // Deligaten anroppas 
 
             var table = new Table()
                 .BorderColor(Color.DarkOrange3)
