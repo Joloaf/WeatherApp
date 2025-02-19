@@ -11,8 +11,8 @@ namespace WeatherApp.OutdoorMenu
 {
     internal class DriestToMostHumid
     {
-        // Definiera delegaten för att sortera väderdata
-        public delegate List<WeatherData> SortWeatherData(List<WeatherData> weatherData);
+        // Delegat för att beräkna ett aggregatvärde från en grupp av WeatherData
+        public delegate double Aggregator(IEnumerable<WeatherData> groupData);
 
         public static void SortByDriestToMostHumid()
         {
@@ -23,14 +23,16 @@ namespace WeatherApp.OutdoorMenu
 
             List<WeatherData> weatherData = TextToList.ListList();
 
-            SortWeatherData sortFunction = SortByHumidity; // Deligaten används här 
+            // Definiera en aggregator för att beräkna medelluftfuktighet
+            Aggregator humidityAggregator = group => group.Average(x => x.Humidity);
 
-            var sortedDays = sortFunction(weatherData); // Deligaten anroppas 
+            // Gruppera och sortera med hjälp av delegaten för aggregation
+            var sortedDays = GroupAndSort(weatherData, humidityAggregator);
 
             var table = new Table()
                 .BorderColor(Color.DarkOrange3)
-                .AddColumn(new TableColumn("[bold]Date[/]").Centered())
-                .AddColumn(new TableColumn("[bold]Average Humidity Outdoors (%)[/]").Centered());
+                .AddColumn(new TableColumn("[bold]Datum[/]").Centered())
+                .AddColumn(new TableColumn("[bold]Genomsnittlig luftfuktighet utomhus (%)[/]").Centered());
 
             foreach (var day in sortedDays)
             {
@@ -46,32 +48,30 @@ namespace WeatherApp.OutdoorMenu
                 case ConsoleKey.I:
                     IndoorMenus.ShowIndoorMenus();
                     break;
-
                 case ConsoleKey.U:
                     OutdoorMenus.ShowOutdoorMenu();
                     break;
-
                 case ConsoleKey.Q:
                     MainMenus.ShowMainMenu();
                     return;
-
                 default:
                     AnsiConsole.Markup("[bold red]\nFelaktigt val, försök igen![/]\n");
                     break;
             }
         }
 
-        public static List<WeatherData> SortByHumidity(List<WeatherData> weatherData)
+        // Generisk metod för att gruppera data per datum och sortera baserat på det aggregerade värdet.
+        public static List<WeatherData> GroupAndSort(List<WeatherData> weatherData, Aggregator aggregator)
         {
             return weatherData
                 .Where(w => w.Location.Equals("ute", StringComparison.OrdinalIgnoreCase))
-                .GroupBy(w => $"{w.Year}-{w.Month}-{w.Day}")
+                .GroupBy(w => new { w.Year, w.Month, w.Day })
                 .Select(g => new WeatherData
                 {
-                    Year = g.Key.Split('-')[0],
-                    Month = g.Key.Split('-')[1],
-                    Day = g.Key.Split('-')[2],
-                    Humidity = g.Average(x => x.Humidity)
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Day = g.Key.Day,
+                    Humidity = aggregator(g)
                 })
                 .OrderBy(x => x.Humidity)
                 .ToList();
