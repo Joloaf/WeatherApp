@@ -11,6 +11,7 @@ namespace WeatherApp.OutdoorMenu
 {
     internal class DriestToMostHumid
     {
+
         // Delegat för att beräkna ett aggregatvärde från en grupp av WeatherData
         public delegate double Aggregator(IEnumerable<WeatherData> groupData);
 
